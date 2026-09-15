@@ -1,0 +1,200 @@
+{
+  "commit": "ef4ba0e7750ffae4561657ca33e25b342880f6d5",
+  "files": [
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/Command.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/Command.java",
+      "sha256": "0be3e64588d99a07a21ef624d6ebabba87542d23696cecd15c33d4f1217bb4b2"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/DisplayInfo.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/DisplayInfo.java",
+      "sha256": "da91ef71745ed1f6ee63c1d8517827c78aedd417538d0de4b45b26421acc7c63"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/FakeContext.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/FakeContext.java",
+      "sha256": "bde6f3e246ef83ccf7c85e37eed93dfc260730c67f738942ce792c3ca07a0754"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/IO.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/IO.java",
+      "sha256": "ebec921cc6707e499a280ba38f7ce2d82a0da313f12d8902830b34a7ed7f7d90"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/Ln.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/Ln.java",
+      "sha256": "a18c86b3c4afa35448d76df797480ef47deb3492570f8d6f219bd951e06e58a4"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/Size.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/Size.java",
+      "sha256": "1b04417f3c6d6411933c188911fe7947daedf1eab858093e5d2454c156c17a35"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/Workarounds.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/Workarounds.java",
+      "sha256": "e7a17b23c72fad2b400a6ddead8fa7fec36c4bb69ac967a541f772ec1bd882a1"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/ActivityManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/ActivityManager.java",
+      "sha256": "8fd5fdf64bc41542556687fb5a5e6d1d3e8fef724133392615dd90a9f6834154"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/DisplayControl.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/DisplayControl.java",
+      "sha256": "00d2aa4273337a2369687dbc95a1b0056ddab0d1144583b2c2dec68aaa10c11a"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/DisplayManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/DisplayManager.java",
+      "sha256": "edcb432e04202faeadd6cbcafab194c259f0cd12302f0006d10e5e6c7407dab2"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/InputManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/InputManager.java",
+      "sha256": "c8d30be455d9d82c31ca9a4f9536d0aed9880f87a8302c34d5917c74971fb9e3"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/PowerManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/PowerManager.java",
+      "sha256": "55b1679e153d8c595f7c1afc074321640887f39c934fe222f90122d7c2cff581"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/ServiceManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/ServiceManager.java",
+      "sha256": "f88941aad97e31c1fd483589514c4f964ed57ea921acde6822d9e5b37ee50b5b"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/StatusBarManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/StatusBarManager.java",
+      "sha256": "2ab887f42c635c414cfa313bc1729d4f66bf2105ebce87ec499c696a2b8494a4"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/SurfaceControl.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/SurfaceControl.java",
+      "sha256": "24d38c21a3fb7e5b8b1971d43dbcc6c51176c35f43720d48652d6131e669a9cb"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/third/wrappers/WindowManager.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/third/wrappers/WindowManager.java",
+      "sha256": "2be1a2eb50f7e67213a7ad4ed45c56cb902e9f0516d002cfb36b8860ef50ee27"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/constant/AndroidVersions.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/constant/AndroidVersions.kt",
+      "sha256": "a7a8c3e37abb43ea536d81f7b96259571d819a6bc0c5839cf7353b614376473e"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/constant/DefaultDisplayConfig.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/constant/DefaultDisplayConfig.kt",
+      "sha256": "77d60a6d2683cce34e82239db6ecd008a816feff190728429bdb69d54526e264"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/remote/internal/VirtualDisplayManager.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/remote/internal/VirtualDisplayManager.kt",
+      "sha256": "10def318b18c7afc8bcb1ed70836f4a0e2f448854c5a497c1e287a30b901027c"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/remote/internal/ActivityUtils.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/remote/internal/ActivityUtils.kt",
+      "sha256": "4aea88d2c9143ebcc34dee0aff3f2e7c74258bc14fc4875c5c107133674adbb7"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/maa/InputControlUtils.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/maa/InputControlUtils.java",
+      "sha256": "e5d02bea2b3b16c7e0771821f6323befea1fe69dcfd830231ac93fbeecd59bc0"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/maa/TouchPointerSequence.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/maa/TouchPointerSequence.kt",
+      "sha256": "f78c3cbd8a8b7b6034e40fa7b8b185601472ae49733e7c10fd2bc720d7fad67f"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/bridge/NativeBridgeLib.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/bridge/NativeBridgeLib.java",
+      "sha256": "eef58b750fc6fa7769dba726df2ea0792bec2a0b2f746f8c2351250690d8a223"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapClient.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapClient.java",
+      "sha256": "994ada92ba3b9a18a302ec53d733a9517210de92bc66e6b2e75752a01827a10d"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/root/RootIContentProviderCompat.java",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/root/RootIContentProviderCompat.java",
+      "sha256": "eba58ec83d895489ea10fccb9fabadcd183e72224bccdf99326ce85e6cd36690"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapRegistry.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapRegistry.kt",
+      "sha256": "7fe3a85ddc31c19321674312b7dcf4f5d4a17635bd80a6dbbe0c31a891807ef6"
+    },
+    {
+      "source": "app/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapProvider.kt",
+      "destination": "meow-platform/src/main/java/com/aliothmoon/maameow/root/RootServiceBootstrapProvider.kt",
+      "sha256": "a0c68ccf230cf09d862cea0e940d0da8e3ecfc205b0e35d7e9fd4932bcd4b981"
+    },
+    {
+      "source": "app/src/main/native/bridge.cpp",
+      "destination": "meow-platform/src/main/cpp/bridge.cpp",
+      "sha256": "6a3b1f9f53f0d14505216035cc41aa4d34033a03388da145720c05f524105159"
+    },
+    {
+      "source": "app/src/main/native/bridge.h",
+      "destination": "meow-platform/src/main/cpp/bridge.h",
+      "sha256": "b9b16b94e8493a4854c028557e791eb2effaeb122f67101701096b61eecaae18"
+    },
+    {
+      "source": "app/src/main/native/bridge_capture.cpp",
+      "destination": "meow-platform/src/main/cpp/bridge_capture.cpp",
+      "sha256": "87f2a900f92ff07db19d91c07716c460b9ea00f3d73919adb3321f467a244077"
+    },
+    {
+      "source": "app/src/main/native/bridge_capture.h",
+      "destination": "meow-platform/src/main/cpp/bridge_capture.h",
+      "sha256": "930123ec09fdd4cb576fefb002706a443c2876fde1a73f4e92b3f4494dd27f1b"
+    },
+    {
+      "source": "app/src/main/native/bridge_frame_buffer.cpp",
+      "destination": "meow-platform/src/main/cpp/bridge_frame_buffer.cpp",
+      "sha256": "c27582a060a633b94496b3dfa35b0a50dc4992d0170039fefe30743914e194c0"
+    },
+    {
+      "source": "app/src/main/native/bridge_frame_buffer.h",
+      "destination": "meow-platform/src/main/cpp/bridge_frame_buffer.h",
+      "sha256": "4ecc217588624095782216c8efda6348f652c080ad7d3cf2f23d169dd025f650"
+    },
+    {
+      "source": "app/src/main/native/bridge_input.cpp",
+      "destination": "meow-platform/src/main/cpp/bridge_input.cpp",
+      "sha256": "ef8f6aaa1b1a3ec74e1e289d24550c13225a2db62afa8336895c28e94d20465d"
+    },
+    {
+      "source": "app/src/main/native/bridge_input.h",
+      "destination": "meow-platform/src/main/cpp/bridge_input.h",
+      "sha256": "9e96018b4d1f74188c3cf3e16c7d529fee85ce278363fdc40603122c465999d1"
+    },
+    {
+      "source": "app/src/main/native/bridge_internal.h",
+      "destination": "meow-platform/src/main/cpp/bridge_internal.h",
+      "sha256": "6416e550c810845544a662f572ce9c00bafca86c1b341a4705e9399f68634bf9"
+    },
+    {
+      "source": "app/src/main/native/bridge_preview.cpp",
+      "destination": "meow-platform/src/main/cpp/bridge_preview.cpp",
+      "sha256": "19924e61eed27a930a6a1b7b97ccc736617b0f6b8880263515aa87da405f8e09"
+    },
+    {
+      "source": "app/src/main/native/bridge_preview.h",
+      "destination": "meow-platform/src/main/cpp/bridge_preview.h",
+      "sha256": "433aa9fa1c0d67286279e8265c0b5bf1aad3b36af8191249d6393ba2f5a5ba9b"
+    },
+    {
+      "source": "app/src/main/native/misc.cpp",
+      "destination": "meow-platform/src/main/cpp/misc.cpp",
+      "sha256": "6ca7b58ec3cbe763e57659d63b7a71d257a8fe078de335da3e7635e3bf609fa8"
+    }
+  ]
+}

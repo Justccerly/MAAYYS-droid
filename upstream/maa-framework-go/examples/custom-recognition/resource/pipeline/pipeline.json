@@ -1,0 +1,12 @@
+{
+    "Startup": {
+        "recognition": "Custom",
+        "custom_recognition": "MyRec"
+    },
+    "TaskA": {
+        "doc": "do something"
+    },
+    "TaskB": {
+        "doc": "do something"
+    }
+}

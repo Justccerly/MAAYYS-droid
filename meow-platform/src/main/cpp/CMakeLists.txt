@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(maayys_meow_bridge)
+set(CMAKE_CXX_STANDARD 17)
+add_library(bridge SHARED bridge.cpp bridge_frame_buffer.cpp bridge_preview.cpp bridge_capture.cpp bridge_input.cpp misc.cpp)
+target_compile_options(bridge PRIVATE -O2 -fvisibility=hidden)
+target_link_options(bridge PRIVATE -Wl,-z,max-page-size=16384)
+target_link_libraries(bridge log android jnigraphics mediandk EGL GLESv2)

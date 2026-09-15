@@ -1,0 +1,3 @@
+# Copy this file to local.properties and replace with the absolute Android SDK path.
+# Do not commit local.properties.
+sdk.dir=/absolute/path/to/Android/Sdk

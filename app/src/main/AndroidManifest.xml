@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:name="com.maayys.host.MaaApplication"
+        android:label="@string/app_name" android:allowBackup="false"
+        android:icon="@drawable/maayys_logo" android:theme="@style/Theme.MaaYYs">
+        <activity android:name="com.maayys.host.MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name="com.maayys.host.ScheduleReceiver" android:exported="false" />
+    </application>
+</manifest>

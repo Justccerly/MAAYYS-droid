@@ -1,0 +1,30 @@
+{
+  "referenced_actions": [
+    "AutoBattle",
+    "AutoFoster",
+    "BattleTeam",
+    "BonusToggleAction",
+    "ChallengeDungeonBoss",
+    "ClearHitCount",
+    "Guess",
+    "HumanTouch",
+    "MyCustomAction",
+    "QuestionMatcher",
+    "RandomSwipe",
+    "RandomTask",
+    "RandomWait",
+    "ReStartGame",
+    "RepeatChallengeNTimes",
+    "SwitchSoul",
+    "TimeCheck"
+  ],
+  "referenced_recognitions": [
+    "CoBattleTargetRecognition",
+    "OCRResultCounterRecognition",
+    "TaskCounterRecognition"
+  ],
+  "missing_registrations": [
+    "MyCustomAction"
+  ],
+  "missing_registrations_scope": "MyCustomAction appears only under resource_pack/test; none of the 8 selectable resources load that test directory."
+}

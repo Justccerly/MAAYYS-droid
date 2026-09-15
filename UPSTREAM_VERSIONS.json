@@ -1,0 +1,25 @@
+{
+  "maayys": {
+    "repository": "https://github.com/TanyaShue/MaaYYs",
+    "commit": "1bdea0d3f1030d3cc7872ecefdde43e731420cbe",
+    "agent_changes": [
+      "Android native library directory from MAAYYS_NATIVE_LIB_DIR",
+      "Local Android-compatible Go binding replacement"
+    ]
+  },
+  "maa_framework": {
+    "version": "5.13.0",
+    "repository": "https://github.com/MaaXYZ/MaaFramework"
+  },
+  "maa_framework_go": {
+    "version": "v4.0.0-beta.12",
+    "changes": [
+      "Accept android alongside linux when selecting four shared library names"
+    ]
+  },
+  "maameow_reference": {
+    "repository": "https://github.com/Aliothmoon/MAA-Meow",
+    "commit": "ef4ba0e7750ffae4561657ca33e25b342880f6d5",
+    "status": "JNA loading architecture referenced; privileged display/input bridge integration pending"
+  }
+}

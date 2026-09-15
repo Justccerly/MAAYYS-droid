@@ -1,0 +1,141 @@
+name: test
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - "**"
+    paths-ignore:
+      - "README.md"
+      - "README_zh.md"
+
+  pull_request:
+    branches:
+      - "**"
+    paths-ignore:
+      - "README.md"
+      - "README_zh.md"
+
+  workflow_dispatch:
+
+jobs:
+  meta:
+    uses: ./.github/workflows/meta.yml
+
+  test:
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            arch: x86_64
+            maa_prefix: MAA-win
+            container: ""
+          - os: ubuntu-latest
+            arch: x86_64
+            maa_prefix: MAA-linux
+            container: archlinux:base-devel
+          - os: macos-latest
+            arch: aarch64
+            maa_prefix: MAA-macos
+            container: ""
+      fail-fast: false
+    env:
+      ARCH: ${{ matrix.arch }}
+      MAA_FILE_PREFIX: ${{ matrix.maa_prefix }}
+
+    steps:
+      - name: Update system
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pacman -Syu --noconfirm
+
+      - name: Install dep
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pacman -Sy
+          pacman -S --noconfirm git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install LLVM
+        if: matrix.os == 'macos-latest'
+        run: brew install llvm
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          latest: true
+          preRelease: true
+          fileName: "${{ env.MAA_FILE_PREFIX }}-${{ env.ARCH }}*"
+          out-file-path: "deps"
+          extract: true
+
+      - name: Setup Test Environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo "${{ github.workspace }}/deps/bin;%PATH%" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Setup Test Environment (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          echo "LD_LIBRARY_PATH=${{ github.workspace }}/deps/bin:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
+      - name: Setup Test Environment (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          echo "DYLD_LIBRARY_PATH=${{ github.workspace }}/deps/bin:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+
+      - name: Run API Check
+        run: |
+          go -C tools/api-check run . --config config.ci.yaml
+
+      - name: Prepare Test Data
+        run: |
+          mkdir -p test/data_set/PipelineSmoking/resource/model/ocr
+          cp -r test/data_set/MaaCommonAssets/OCR/ppocr_v4/zh_cn/* test/data_set/PipelineSmoking/resource/model/ocr
+          mkdir -p test/data_set/PipelineSmoking/resource/model/classify
+          cp -r test/classifier.onnx test/data_set/PipelineSmoking/resource/model/classify
+
+      - name: Run Tests
+        id: run_tests
+        continue-on-error: true
+        env:
+          CGO_ENABLED: 0
+        run: |
+          go test -v ./...
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ env.MAA_FILE_PREFIX }}-${{ env.ARCH }}-full_log
+          path: "test/debug"
+
+      - name: Fail job if tests failed
+        if: always() && steps.run_tests.outcome == 'failure'
+        run: |
+          echo "Tests failed. Check uploaded logs for details."
+          exit 1
+
+  release:
+    if: ${{ needs.meta.outputs.is_release == 'true' }}
+    needs: [meta, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.meta.outputs.tag }}
+          prerelease: ${{ contains(needs.meta.outputs.tag, '-alpha') || contains(needs.meta.outputs.tag, '-beta') || contains(needs.meta.outputs.tag, '-rc') }}

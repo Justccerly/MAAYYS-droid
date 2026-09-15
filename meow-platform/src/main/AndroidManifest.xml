@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <application>
+        <service android:name="com.maayys.platform.BackgroundKeepAliveService" android:exported="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User requested game execution on a private virtual display" />
+        </service>
+        <provider android:name="com.aliothmoon.maameow.root.RootServiceBootstrapProvider"
+            android:authorities="${applicationId}.root.bootstrap" android:exported="true" />
+        <provider android:name="rikka.shizuku.ShizukuProvider" android:authorities="${applicationId}.shizuku"
+            android:exported="true" android:multiprocess="false" android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    </application>
+</manifest>

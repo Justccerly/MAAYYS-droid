@@ -1,0 +1,11 @@
+.gradle/
+**/build/
+**/.cxx/
+local.properties
+.idea/
+*.iml
+__pycache__/
+*.hprof
+*.log
+app/src/main/jniLibs/**/*.so
+app/src/main/assets/maayys-resources.zip
