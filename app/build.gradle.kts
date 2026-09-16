@@ -15,7 +15,7 @@ android {
         versionName = "0.4.0-dev"
         resValue("string", "app_name", "MAAYYS-droid")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
+        ndk { abiFilters += listOf("arm64-v8a") }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -49,7 +49,7 @@ dependencies {
 val verifyUpstreamInputs by tasks.registering {
     doLast {
         val required = listOf("src/main/assets/maayys-resources.zip", "src/main/assets/maayys-manifest.json") +
-            listOf("arm64-v8a", "x86_64").flatMap { abi ->
+            listOf("arm64-v8a").flatMap { abi ->
                 listOf("libMaaFramework.so", "libMaaAgentClient.so", "libMaaAgentServer.so", "libmaayys_agent.so")
                     .map { "src/main/jniLibs/$abi/$it" }
             }
