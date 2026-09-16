@@ -49,7 +49,9 @@ class ProjectCatalog(val root: File) {
                 node?.get("package")?.asString?.let { pkg = it }
             }
         }
-        return requireNotNull(pkg) { "所选资源没有提供阴阳师包名" }
+        val rawPkg = requireNotNull(pkg) { "所选资源没有提供阴阳师包名" }
+        val cleanPkg = if (rawPkg.contains("/")) rawPkg.substringBefore("/") else rawPkg
+        return if (cleanPkg == "com.netease.onmyoji.wyzymnqsd_cps") "com.netease.onmyoji" else cleanPkg
     }
 
     /** Recursive JSON-object merge is the ProjectInterface pipeline_override rule. */

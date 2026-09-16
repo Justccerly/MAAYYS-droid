@@ -82,6 +82,32 @@ object ActivityUtils {
     }
 
     @JvmStatic
+    fun resolveInstalledPackage(packageName: String): String {
+        val pm = FakeContext.get().packageManager
+        if (pm.getLaunchIntentForPackage(packageName) != null || pm.getLeanbackLaunchIntentForPackage(packageName) != null) {
+            return packageName
+        }
+        if (packageName.contains("onmyoji") || packageName.startsWith("com.netease.")) {
+            val candidates = listOf(
+                "com.netease.onmyoji",
+                "com.netease.onmyoji.bili",
+                "com.netease.onmyoji.wyzymnqsd_cps",
+                "com.netease.onmyoji.mi",
+                "com.netease.onmyoji.huawei",
+                "com.netease.onmyoji.oppo",
+                "com.netease.onmyoji.vivo"
+            )
+            for (candidate in candidates) {
+                if (pm.getLaunchIntentForPackage(candidate) != null || pm.getLeanbackLaunchIntentForPackage(candidate) != null) {
+                    Ln.i("resolveInstalledPackage: redirected $packageName -> installed $candidate")
+                    return candidate
+                }
+            }
+        }
+        return packageName
+    }
+
+    @JvmStatic
     @JvmOverloads
     fun startApp(
         packageName: String,
@@ -90,13 +116,14 @@ object ActivityUtils {
         excludeFromRecents: Boolean = true
     ): Boolean {
         val pm = FakeContext.get().packageManager
+        val actualPkg = resolveInstalledPackage(packageName)
 
-        val intent = pm.getLaunchIntentForPackage(packageName) ?: run {
-            pm.getLeanbackLaunchIntentForPackage(packageName)
+        val intent = pm.getLaunchIntentForPackage(actualPkg) ?: run {
+            pm.getLeanbackLaunchIntentForPackage(actualPkg)
         }
 
         if (intent == null) {
-            Ln.w("Cannot create launch intent for app $packageName")
+            Ln.w("Cannot create launch intent for app $packageName (resolved: $actualPkg)")
             return false
         }
 
@@ -107,7 +134,7 @@ object ActivityUtils {
         intent.addFlags(flag)
 
         if (forceStop) {
-            ServiceManager.getActivityManager().forceStopPackage(packageName)
+            ServiceManager.getActivityManager().forceStopPackage(actualPkg)
         }
         Ln.i("startApp ${intent.component?.flattenToShortString()}")
 
