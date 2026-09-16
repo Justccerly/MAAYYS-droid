@@ -55,7 +55,7 @@ GitHub 资源来自 `TanyaShue/MaaYYs`，Core 来自 `MaaXYZ/MaaFramework`。
 ### 本地构建命令
 环境要求：JDK 17、Android SDK Platform 35、Build Tools 34.0.0、NDK 27.2.12479018、Go 1.24+。
 ```powershell
-cd C:\Users\su\Desktop\android-agent
+cd MAAYYS-droid
 . .\env.ps1
 python scripts/prepare-framework.py
 python scripts/prepare-resources.py --source C:\path\to\MaaYYs
@@ -86,9 +86,7 @@ scripts/             上游资源、Core 和 Agent 构建脚本
 
 ## 上游和许可证
 上游版本、源码修改和许可证见：
-- [PROJECT_PLAN.md](PROJECT_PLAN.md)
 - [UPSTREAM_VERSIONS.json](UPSTREAM_VERSIONS.json)
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
-- [BUILDING.md](BUILDING.md)
 
 MaaYYs 使用 MIT 许可证；MaaFramework 和 Go 绑定使用 LGPL-3.0；MAA-Meow 主项目使用 AGPL-3.0，复用的第三方代码保留其原许可证。分发修改后的版本时请同时提供对应源码和许可证文本。
