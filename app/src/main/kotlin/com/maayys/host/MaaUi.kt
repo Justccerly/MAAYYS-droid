@@ -365,21 +365,47 @@ private val destinations = listOf(Destination("首页", Icons.Rounded.Home), Des
 }
 
 @Composable private fun PreviewSurface(worker: java.util.concurrent.ExecutorService) {
-    AndroidView(factory = { context -> TextureView(context).apply {
-        surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-            override fun onSurfaceTextureAvailable(texture: android.graphics.SurfaceTexture, width: Int, height: Int) { val surface = Surface(texture); worker.execute { try { BackgroundConnection.preview(surface) } finally { surface.release() } } }
-            override fun onSurfaceTextureSizeChanged(texture: android.graphics.SurfaceTexture, width: Int, height: Int) {}
-            override fun onSurfaceTextureDestroyed(texture: android.graphics.SurfaceTexture): Boolean { worker.execute { runCatching { BackgroundConnection.preview(null) } }; return true }
-            override fun onSurfaceTextureUpdated(texture: android.graphics.SurfaceTexture) {}
-        }
-    } }, update = { view -> view.setOnTouchListener { _, event ->
-        if (view.width == 0 || view.height == 0) false else {
-            val index = event.actionIndex
-            val action = when (event.actionMasked) { android.view.MotionEvent.ACTION_DOWN, android.view.MotionEvent.ACTION_POINTER_DOWN -> 0; android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_POINTER_UP -> 1; android.view.MotionEvent.ACTION_MOVE -> 2; else -> 3 }
-            val x = (event.getX(index) * 1280 / view.width).toInt().coerceIn(0,1279); val y = (event.getY(index) * 720 / view.height).toInt().coerceIn(0,719); val contact = event.getPointerId(index)
-            worker.execute { runCatching { BackgroundConnection.remote?.touch(action, x, y, contact) } }; true
-        }
-    } }, modifier = Modifier.fillMaxSize())
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        AndroidView(
+            factory = { context ->
+                TextureView(context).apply {
+                    surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+                        override fun onSurfaceTextureAvailable(texture: android.graphics.SurfaceTexture, width: Int, height: Int) {
+                            val surface = Surface(texture)
+                            worker.execute { try { BackgroundConnection.preview(surface) } finally { surface.release() } }
+                        }
+                        override fun onSurfaceTextureSizeChanged(texture: android.graphics.SurfaceTexture, width: Int, height: Int) {}
+                        override fun onSurfaceTextureDestroyed(texture: android.graphics.SurfaceTexture): Boolean {
+                            worker.execute { runCatching { BackgroundConnection.preview(null) } }
+                            return true
+                        }
+                        override fun onSurfaceTextureUpdated(texture: android.graphics.SurfaceTexture) {}
+                    }
+                }
+            },
+            update = { view ->
+                view.setOnTouchListener { _, event ->
+                    if (view.width == 0 || view.height == 0) false else {
+                        val index = event.actionIndex
+                        val action = when (event.actionMasked) {
+                            android.view.MotionEvent.ACTION_DOWN, android.view.MotionEvent.ACTION_POINTER_DOWN -> 0
+                            android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_POINTER_UP -> 1
+                            android.view.MotionEvent.ACTION_MOVE -> 2
+                            else -> 3
+                        }
+                        val x = (event.getX(index) * 1280f / view.width).toInt().coerceIn(0, 1279)
+                        val y = (event.getY(index) * 720f / view.height).toInt().coerceIn(0, 719)
+                        val contact = event.getPointerId(index)
+                        worker.execute { runCatching { BackgroundConnection.remote?.touch(action, x, y, contact) } }
+                        true
+                    }
+                }
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16f / 9f, matchHeightConstraintsFirst = true)
+        )
+    }
 }
 
 @Composable private fun SchedulePage(model: AppModel) = PageColumn {

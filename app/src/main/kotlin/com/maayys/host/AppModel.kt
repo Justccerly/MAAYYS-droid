@@ -43,6 +43,7 @@ class AppModel(app: Application) : AndroidViewModel(app) {
     var selections by mutableStateOf(JsonObject()); private set
     var savedTaskName by mutableStateOf(prefs.getString("saved_task", null)); private set
     var showLogs by mutableStateOf(false)
+    private var pendingTaskQueue = mutableListOf<String>()
     var resourceUpdateBusy by mutableStateOf(false); private set
     var coreUpdateBusy by mutableStateOf(false); private set
     var updateMessage by mutableStateOf<String?>(null); private set
@@ -55,10 +56,28 @@ class AppModel(app: Application) : AndroidViewModel(app) {
     private val backgroundListener: () -> Unit = { viewModelScope.launch { backgroundActive = BackgroundConnection.display > 0 } }
     private val statusListener: (RuntimeEvent) -> Unit = { event -> viewModelScope.launch {
         when (event) {
-            is RuntimeEvent.Started -> { running = true; currentTask = event.task; status = "任务执行中" }
-            is RuntimeEvent.Finished -> { running = false; status = if (event.success) "任务已完成" else "任务未完成"; if (!event.success) error = "${event.task}未完成，请查看运行日志。" }
-            is RuntimeEvent.Failed -> { running = false; status = "运行遇到问题"; error = event.error }
-            RuntimeEvent.Stopped -> { running = false; status = "任务已停止" }
+            is RuntimeEvent.Started -> { running = true; currentTask = event.task; status = "任务执行中：${event.task}" }
+            is RuntimeEvent.Finished -> {
+                if (pendingTaskQueue.isNotEmpty()) {
+                    val next = pendingTaskQueue.removeAt(0)
+                    startSingleTaskByName(next)
+                } else {
+                    running = false
+                    status = if (event.success) "全部任务已完成" else "任务未完成"
+                    if (!event.success) error = "${event.task}未完成，请查看运行日志。"
+                }
+            }
+            is RuntimeEvent.Failed -> {
+                pendingTaskQueue.clear()
+                running = false
+                status = "运行遇到问题"
+                error = event.error
+            }
+            RuntimeEvent.Stopped -> {
+                pendingTaskQueue.clear()
+                running = false
+                status = "任务已停止"
+            }
         }
     } }
     init {
@@ -181,30 +200,50 @@ class AppModel(app: Application) : AndroidViewModel(app) {
         selections = selections.deepCopy().apply { add(name, value) }
         taskToConfigure?.get("name")?.asString?.let { prefs.edit().putString("options:$it", selections.toString()).apply() }
     }
-    fun startTask() {
-        val task = taskToConfigure ?: return; val project = catalog ?: return
+    fun startSingleTaskByName(name: String) {
+        val project = catalog ?: return
+        val task = project.tasks.firstOrNull { it.get("name").asString == name } ?: return
         try {
             require(mode != null) { "请先在设置中选择 Root 或 Shizuku 控制方式。" }
             require(mode != ControllerMode.SHIZUKU || backgroundMode) { "Shizuku 当前用于后台模式，请开启后台运行。" }
-            project.overrides(task, selections)
+            val optionsJson = runCatching { JsonParser.parseString(prefs.getString("options:$name", "{}")).asJsonObject }.getOrDefault(JsonObject())
+            project.overrides(task, optionsJson)
             if (backgroundMode) context.startForegroundService(Intent(context, BackgroundKeepAliveService::class.java))
             val intent = Intent(context, MaaAgentForegroundService::class.java).setAction(MaaAgentForegroundService.ACTION_RUN_TASK)
-                .putExtra(MaaAgentForegroundService.EXTRA_TASK, task.get("name").asString)
-                .putExtra(MaaAgentForegroundService.EXTRA_PARAMS, Bundle().apply { putString("options", selections.toString()) })
-            currentTask = task.get("name").asString; running = true; status = "正在连接运行环境"
-            savedTaskName = task.get("name").asString
+                .putExtra(MaaAgentForegroundService.EXTRA_TASK, name)
+                .putExtra(MaaAgentForegroundService.EXTRA_PARAMS, Bundle().apply { putString("options", optionsJson.toString()) })
+            currentTask = name; running = true; status = "正在连接运行环境：$name"
+            savedTaskName = name
             prefs.edit().putString("saved_task", savedTaskName).apply()
-            context.startForegroundService(intent); taskToConfigure = null
-        } catch (e: Exception) { error = e.message; running = false }
+            context.startForegroundService(intent)
+        } catch (e: Exception) {
+            error = e.message; running = false; pendingTaskQueue.clear()
+        }
+    }
+    fun startTask() {
+        val task = taskToConfigure ?: return
+        pendingTaskQueue.clear()
+        startSingleTaskByName(task.get("name").asString)
+        taskToConfigure = null
     }
     fun stopTask() {
+        pendingTaskQueue.clear()
         status = "正在停止任务"
         if (!context.stopService(Intent(context, MaaAgentForegroundService::class.java))) { running = false; status = "等待开始" }
     }
     fun startSavedTask() {
-        val task = savedTask() ?: run { error = "请先到任务分页配置并保存一个自动化任务。"; tab = 1; return }
-        configure(task)
-        startTask()
+        val project = catalog ?: run { error = "资源正在加载中，请稍候"; return }
+        val enabledTasks = project.tasks.map { it.get("name").asString }.filter { taskEnabled(it) }
+        if (enabledTasks.isEmpty()) {
+            error = "请先在任务分页中开启至少一个任务开关。"
+            tab = 1
+            return
+        }
+        pendingTaskQueue.clear()
+        if (enabledTasks.size > 1) {
+            pendingTaskQueue.addAll(enabledTasks.drop(1))
+        }
+        startSingleTaskByName(enabledTasks.first())
     }
     fun openBackground() {
         val project = catalog ?: return
