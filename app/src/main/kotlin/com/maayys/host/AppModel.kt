@@ -151,8 +151,13 @@ class AppModel(app: Application) : AndroidViewModel(app) {
         return 0
     }
     fun setBackground(value: Boolean) { if (!running) { backgroundMode = value; prefs.edit().putBoolean("background", value).apply() } }
-    fun toggleTaskEnabled(task: String, value: Boolean) { prefs.edit().putBoolean("enabled:$task", value).apply(); schedules = ScheduleStore.load(context) }
-    fun taskEnabled(task: String) = prefs.getBoolean("enabled:$task", true)
+    var tasksEnabledState by mutableStateOf<Map<String, Boolean>>(emptyMap()); private set
+    fun toggleTaskEnabled(task: String, value: Boolean) {
+        prefs.edit().putBoolean("enabled:$task", value).apply()
+        tasksEnabledState = tasksEnabledState + (task to value)
+        schedules = ScheduleStore.load(context)
+    }
+    fun taskEnabled(task: String): Boolean = tasksEnabledState[task] ?: prefs.getBoolean("enabled:$task", true)
     fun saveSchedule(entry: ScheduleEntry) { ScheduleStore.save(context, (schedules.filterNot { it.task == entry.task } + entry)); schedules = ScheduleStore.load(context) }
     fun setSchedule(days: Set<Int>, minutes: Set<Int>) {
         scheduleDays = days; scheduleMinutes = minutes
@@ -164,7 +169,14 @@ class AppModel(app: Application) : AndroidViewModel(app) {
         taskToConfigure = task
         selections = runCatching { JsonParser.parseString(prefs.getString("options:${task.get("name").asString}", "{}")).asJsonObject }.getOrDefault(JsonObject())
     }
-    fun savedTask(): JsonObject? = savedTaskName?.let { name -> catalog?.tasks?.firstOrNull { it.get("name").asString == name } }
+    fun savedTask(): JsonObject? {
+        savedTaskName?.let { name ->
+            catalog?.tasks?.firstOrNull { it.get("name").asString == name }?.let { return it }
+        }
+        val firstEnabled = catalog?.tasks?.firstOrNull { taskEnabled(it.get("name").asString) }
+        if (firstEnabled != null) return firstEnabled
+        return catalog?.tasks?.firstOrNull()
+    }
     fun choose(name: String, value: JsonElement) {
         selections = selections.deepCopy().apply { add(name, value) }
         taskToConfigure?.get("name")?.asString?.let { prefs.edit().putString("options:$it", selections.toString()).apply() }
@@ -196,11 +208,6 @@ class AppModel(app: Application) : AndroidViewModel(app) {
     }
     fun openBackground() {
         val project = catalog ?: return
-        if (savedTask() == null) {
-            error = "请先到任务分页配置并保存一个自动化任务。"
-            tab = 1
-            return
-        }
         val selected = mode ?: run { error = "请先在设置中选择控制方式。"; return }
         if (backgroundBusy) return
         backgroundBusy = true; setBackground(true)
